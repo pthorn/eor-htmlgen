@@ -4,8 +4,8 @@ import re
 import sys
 
 
-if sys.version_info < (3, 1):
-    raise Exception("eor-htmlgen requires Python 3.1 or higher.")
+if sys.version_info < (3, 3):
+    raise Exception("eor-htmlgen requires Python 3.3 or higher.")
 
 setup(name='eor-htmlgen',
     version='1.0.0',
