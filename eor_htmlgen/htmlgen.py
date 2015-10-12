@@ -33,10 +33,11 @@ class Tag(object):
         return '' if len(strings) == 0 else ' ' + ' '.join(strings)
 
     def add(self, child):
-        if isinstance(child, (list, tuple)):
-            self.children.extend(child)
-        else:
+        if _is_sequence(child):
+            self.children.extend([i for i in child if i])
+        elif child:
             self.children.append(child)
+
         return self
 
     def render(self):
@@ -65,6 +66,14 @@ class RawText(object):
 
     def render(self):
         return self.val
+
+
+def _is_sequence(arg):
+    """
+    see http://stackoverflow.com/questions/10160416/json-serialization-of-sqlalchemy-association-proxies
+    """
+    return not hasattr(arg, "strip") and (hasattr(arg, "__getitem__") or hasattr(arg, "__iter__"))
+
 
 
 _singleton_tags = frozenset((
