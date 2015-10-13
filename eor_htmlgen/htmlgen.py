@@ -49,6 +49,9 @@ class Tag(object):
             closing_tag = '' if self.tag in _singleton_tags else '</{0}>'.format(self.tag)
         )
 
+    def __str__(self):
+        return self.render()
+
 
 class Text(object):
 
@@ -58,6 +61,9 @@ class Text(object):
     def render(self):
         return html_escape(self.val)
 
+    def __str__(self):
+        return self.render()
+
 
 class RawText(object):
 
@@ -66,6 +72,9 @@ class RawText(object):
 
     def render(self):
         return self.val
+
+    def __str__(self):
+        return self.render()
 
 
 def _is_sequence(arg):
