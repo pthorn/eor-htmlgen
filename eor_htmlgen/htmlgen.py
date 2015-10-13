@@ -29,6 +29,8 @@ class Tag(object):
                 if v:
                     strings.append(k)
             else:
+                if k == 'class':
+                    v = _render_val_for_class_attr(v)
                 strings.append('%s="%s"' % (html_escape(k), html_escape(v)))
 
         return '' if len(strings) == 0 else ' ' + ' '.join(strings)
@@ -84,6 +86,14 @@ def _is_sequence(arg):
     """
     return not hasattr(arg, "strip") and (hasattr(arg, "__getitem__") or hasattr(arg, "__iter__"))
 
+
+def _render_val_for_class_attr(val):
+    if isinstance(val, dict):
+        return ' '.join([str(k) for k, v in val.items() if v])
+    elif _is_sequence(val):
+        return ' '.join([str(i) for i in val if i])
+    else:
+        return val
 
 
 _singleton_tags = frozenset((
