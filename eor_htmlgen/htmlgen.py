@@ -19,14 +19,15 @@ class Tag(object):
         strings = []
 
         for k, v in self.attrs.items():
-            if k.endswith('_'):    # class_='foo'
-                k = k.rstrip('_')
+            if v is None:
+                continue
 
-            k = k.replace('_', '-')  # e.g. data_foo => data-foo
+            # e.g. class_ => class, data_foo => data-foo
+            k = k.rstrip('_').replace('_', '-')
 
             if k in _boolean_attrs:
                 if v:
-                    strings.append(html_escape(k))
+                    strings.append(k)
             else:
                 strings.append('%s="%s"' % (html_escape(k), html_escape(v)))
 
