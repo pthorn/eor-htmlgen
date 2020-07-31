@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from markupsafe import escape as html_escape
+from markupsafe import Markup, escape as html_escape
 
 
 __all__ = ['Tag', 'Text', 'RawText']
@@ -45,12 +45,16 @@ class Tag(object):
 
     def render(self):
         rendered_children = [child.render() for child in self.children]
-        return '<{tag}{attrs}>{children}{closing_tag}'.format(
-            tag = html_escape(self.tag),
+        closing_tag = '' if self.tag in _singleton_tags else '</{0}>'.format(self.tag)
+
+        html = '<{tag}{attrs}>{children}{closing_tag}'.format(
+            tag = self.tag,
             attrs = self._render_attrs(),
             children=''.join(rendered_children),
-            closing_tag = '' if self.tag in _singleton_tags else '</{0}>'.format(self.tag)
+            closing_tag = closing_tag
         )
+
+        return Markup(html)
 
     def __str__(self):
         return self.render()
